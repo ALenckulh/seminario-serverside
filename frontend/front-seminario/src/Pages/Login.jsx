@@ -99,7 +99,7 @@ function Login() {
               id="email"
               label="Email Address"
               name="email"
-              autoComplete="email"
+              autoComplete
               autoFocus
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -111,7 +111,7 @@ function Login() {
               label="Password"
               type="password"
               id="password"
-              autoComplete="current-password"
+              autoComplete
               onChange={(e) => setPassword(e.target.value)}
             />
             <Button

@@ -97,7 +97,7 @@ function Edit() {
             id="name"
             label="Name"
             name="text"
-            autoComplete="text"
+            autoComplete="off"
             autoFocus
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -109,7 +109,7 @@ function Edit() {
             label="E-mail"
             name="email"
             type="email"
-            autoComplete="email"
+            autoComplete="off"
             autoFocus
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -121,7 +121,7 @@ function Edit() {
             label="Password"
             name="password"
             type="password"
-            autoComplete="password"
+            autoComplete="off"
             autoFocus
             onChange={(e) => setPassword(e.target.value)}
           />
