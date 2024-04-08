@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useNavigate } from "react-router-dom"
 import axios from "axios";
 
 import { Alert, Avatar, Button, CssBaseline, TextField, Paper, Box, Grid, Typography } from "@mui/material";
@@ -9,7 +10,9 @@ const defaultTheme = createTheme();
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate()
   //const [user, setUser] = useState(null);
 
 
@@ -25,16 +28,16 @@ function Login() {
       {
         headers: { "Content-Type": "application/json" },
       }
-    );
+    )
 
     console.log(response.data)
     //setUser(response.data)
-    //NAVIGATE?
+    navigate("/Edit")
     }
     catch (error) {
       if (!error?.response) {
-        setError('Erro ao acessar o seguidor')
-      } else {error.response.status ==401} {
+        setError('Erro ao acessar o servidor')
+      } else {error.response.status == 401} {
         setError('Usuário ou senha inválidos')
       }
     }
@@ -122,10 +125,11 @@ function Login() {
                   Sign In
                 </Button>
                 {error == '' ? (
-                  <p></p>
+                  <></>
                 ) : (
                   <Alert severity="error">{error}</Alert>
                 )}
+                {/* <NavLink to="/Edit"> bleh </NavLink> */}
               </Box>
             </Box>
           </Grid>
