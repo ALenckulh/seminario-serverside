@@ -37,5 +37,22 @@ routes.get('/login', (req, res) => {
     return res.status(404).json({ message: 'User not found' });
 });
 
+routes.patch('/users/:id', (req, res) => {
+    const userId = parseInt(req.params.id);
+    const { name, email, password } = req.body;
+
+    const userIndex = users.findIndex(user => user.id === userId);
+    if (userIndex !== -1) {
+        users[userIndex] = {
+            ...users[userIndex],
+            name: name || users[userIndex].name,
+            email: email || users[userIndex].email,
+            password: password || users[userIndex].password
+        };
+        return res.status(200).json(users[userIndex]);
+    }
+
+    return res.status(404).json({ message: 'User not found' });
+});
 
 module.exports = routes;
