@@ -3,7 +3,7 @@ const express = require('express');
 const routes = express.Router();
 const users = [{
     id: 1,
-    name: 'Ana Paula',
+    name: 'PaulaAna ',
     email: 'aninhagameplays@email.com',
     password: '12345'
 }];
@@ -18,8 +18,6 @@ routes.post('/login', (req, res) => {
     }
 
     return res.status(401).json({message: 'Invalid credentials'})
-
-    res.send(email);
 })
 
 module.exports = routes;
