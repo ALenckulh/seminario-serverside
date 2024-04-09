@@ -1,5 +1,3 @@
-//Olá {user && user.name}
-
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
@@ -12,6 +10,7 @@ import {
   Box,
   TextField,
   Button,
+  Alert
 } from "@mui/material";
 
 function Edit() {
@@ -19,37 +18,61 @@ function Edit() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+  const [success, setSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [emailValid, setEmailValid] = useState(true);
+  const [passwordValid, setPasswordValid] = useState(true);
 
   useEffect(() => {
-    try {
-      const fetchData = async () => {
-      const response = await axios.get(`http://localhost:3000/login?id=${id}`);
-      const userData = response.data;
-      console.log(response.data);
-      setName(userData.name);
-      setEmail(userData.email);
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/login?id=${id}`);
+        const userData = response.data;
+        console.log(response.data);
+        setName(userData.name);
+        setEmail(userData.email);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
     };
 
     fetchData();
-  } catch (error) {
-  console.error("Error fetching user data:", error);
-  }
   }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await axios.patch(`http://localhost:3000/users/${id}`, {
-        name,
-        email,
-        password,
-      });
-      console.log("User updated:", response.data);
-    } catch (error) {
-      console.error("Error updating user:", error);
+    // Validate email
+    setEmailValid(validateEmail(email));
+    // Validate password
+    setPasswordValid(validatePassword(password));
+
+    // Check if all fields are valid
+    if (emailValid && passwordValid) {
+      try {
+        const response = await axios.patch(`http://localhost:3000/users/${id}`, {
+          name,
+          email,
+          password,
+        });
+        console.log("User updated:", response.data);
+        setSuccess(true);
+        setTimeout(() => setSuccess(false), 3000); // Remove success message after 3 seconds
+      } catch (error) {
+        console.error("Error updating user:", error);
+        setErrorMessage("Erro atualizando usuário. Tente novamente");
+      }
     }
+  };
+
+  const validateEmail = (email) => {
+    // Basic email validation
+    return /\S+@\S+\.\S+/.test(email);
+  };
+
+  const validatePassword = (password) => {
+    // Basic password length validation
+    return password.length >= 8;
   };
 
   return (
@@ -74,6 +97,8 @@ function Edit() {
       <CssBaseline />
       <Box
         sx={{
+          borderRadius: 4,
+          width: "40vw",
           py: 8,
           px: 4,
           display: "flex",
@@ -100,6 +125,7 @@ function Edit() {
             autoComplete="off"
             autoFocus
             value={name}
+            required
             onChange={(e) => setName(e.target.value)}
           />
           <TextField
@@ -112,7 +138,10 @@ function Edit() {
             autoComplete="off"
             autoFocus
             value={email}
+            required
             onChange={(e) => setEmail(e.target.value)}
+            error={!emailValid}
+            helperText={!emailValid && "Invalid email format"}
           />
           <TextField
             margin="normal"
@@ -123,7 +152,10 @@ function Edit() {
             type="password"
             autoComplete="off"
             autoFocus
+            required
             onChange={(e) => setPassword(e.target.value)}
+            error={!passwordValid}
+            helperText={!passwordValid && "Password must be at least 8 characters"}
           />
           <Button
             type="submit"
@@ -134,6 +166,8 @@ function Edit() {
           >
             Salvar
           </Button>
+          {success && <Alert severity="success">Usuário atualizado!</Alert>}
+          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
         </Box>
       </Box>
     </Grid>
