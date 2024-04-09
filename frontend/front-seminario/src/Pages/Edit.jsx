@@ -20,8 +20,8 @@ function Edit() {
   const [password, setPassword] = useState("");
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [emailValid, setEmailValid] = useState(true);
-  const [passwordValid, setPasswordValid] = useState(true);
+  //const [emailValid, setEmailValid] = useState(true);
+  //const [passwordValid, setPasswordValid] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,10 +42,10 @@ function Edit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setEmailValid(validateEmail(email));
-    setPasswordValid(validatePassword(password));
+    //setEmailValid(validateEmail(email));
+    //setPasswordValid(validatePassword(password));
 
-    if (emailValid ==true && passwordValid ==true) {
+    //if (emailValid && passwordValid) {
       try {
         const response = await axios.patch(`http://localhost:3000/users/${id}`, {
           name,
@@ -60,17 +60,17 @@ function Edit() {
         setErrorMessage("Erro atualizando usuário. Tente novamente");
       }
     }
-  };
+  //};
 
-  const validateEmail = (email) => {
+  //const validateEmail = (email) => {
     // Basic email validation
-    return /\S+@\S+\.\S+/.test(email);
-  };
+    //return /\S+@\S+\.\S+/.test(email);
+  //};
 
-  const validatePassword = (password) => {
+  //const validatePassword = (password) => {
     // Basic password length validation
-    return password.length >= 8;
-  };
+    //return password.length >= 8;
+  //};
 
   return (
     <Grid
@@ -117,7 +117,7 @@ function Edit() {
             margin="normal"
             fullWidth
             id="name"
-            label="Name"
+            label="Nome"
             name="text"
             autoComplete="off"
             autoFocus
@@ -137,22 +137,22 @@ function Edit() {
             value={email}
             required
             onChange={(e) => setEmail(e.target.value)}
-            error={!emailValid}
-            helperText={!emailValid && "Invalid email format"}
+            //error={!emailValid}
+            //helperText={!emailValid && "Formato de email inválido"}
           />
           <TextField
             margin="normal"
             fullWidth
             id="password"
-            label="Password"
+            label="Senha"
             name="password"
             type="password"
             autoComplete="off"
             autoFocus
             required
             onChange={(e) => setPassword(e.target.value)}
-            error={!passwordValid}
-            helperText={!passwordValid && "Password must be at least 8 characters"}
+            //error={!passwordValid}
+            //helperText={!passwordValid && "Senha deve possuir pelo menos 5 caracteres"}
           />
           <Button
             type="submit"
