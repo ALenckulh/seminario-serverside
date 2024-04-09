@@ -42,24 +42,21 @@ function Edit() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate email
     setEmailValid(validateEmail(email));
-    // Validate password
     setPasswordValid(validatePassword(password));
 
-    // Check if all fields are valid
-    if (emailValid && passwordValid) {
+    if (emailValid ==true && passwordValid ==true) {
       try {
         const response = await axios.patch(`http://localhost:3000/users/${id}`, {
           name,
           email,
           password,
         });
-        console.log("User updated:", response.data);
+        console.log("Usuário Atualizado:", response.data);
         setSuccess(true);
         setTimeout(() => setSuccess(false), 3000); // Remove success message after 3 seconds
       } catch (error) {
-        console.error("Error updating user:", error);
+        console.error("Erro atualizando usuário:", error);
         setErrorMessage("Erro atualizando usuário. Tente novamente");
       }
     }
